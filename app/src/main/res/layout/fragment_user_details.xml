@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".UserDetails">
+
+    <TextView
+        android:id="@+id/noUsers"
+        android:layout_width="379dp"
+        android:layout_height="581dp"
+        android:paddingLeft="140dp"
+        android:paddingTop="850px"
+        android:text="No Users"
+        android:textSize="24sp"
+        android:visibility="visible"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewUsers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/addMoreUsers"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:textSize="24sp"
+        android:text="Add"
+        android:layout_marginLeft="250dp" />
+
+
+</LinearLayout>
