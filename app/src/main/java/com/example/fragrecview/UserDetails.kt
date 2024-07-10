@@ -9,11 +9,15 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import app.UserDao
+import app.UserDatabase
 
 class UserDetails : Fragment() {
     private lateinit var rvAdapter: UserAdapter
     private lateinit var noUsersTextView: TextView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var database: UserDatabase
+    private lateinit var userDao: UserDao
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,8 +28,9 @@ class UserDetails : Fragment() {
         noUsersTextView = view.findViewById(R.id.noUsers)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         rvAdapter = UserAdapter()
-
         recyclerView.adapter = rvAdapter
+        database = UserDatabase.getDatabase((activity as MainActivity).applicationContext)
+        userDao = database.userDao()
 
         updateUI()
 
@@ -38,10 +43,9 @@ class UserDetails : Fragment() {
     }
 
     private fun setData() {
-        val mainAct = activity as? MainActivity
-        mainAct?.userList?.let {
-            rvAdapter.updateData(it)
-        }
+        val users = userDao.getAll()
+        rvAdapter.updateData(users)
+
     }
 
     override fun onResume() {
@@ -52,7 +56,7 @@ class UserDetails : Fragment() {
 
     private fun updateUI() {
         val mainAct = activity as? MainActivity
-        if (mainAct?.userList?.isEmpty() != false) {
+        if (userDao.getAll().isEmpty()) {
             noUsersTextView.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
         } else {

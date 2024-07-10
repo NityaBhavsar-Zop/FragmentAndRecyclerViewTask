@@ -1,5 +1,6 @@
 package com.example.fragrecview
 
+import app.User
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
