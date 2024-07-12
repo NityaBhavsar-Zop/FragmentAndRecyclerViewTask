@@ -30,7 +30,7 @@ class UserInput : Fragment() {
             val id = userID.text.toString()
             val name = userName.text.toString()
             val phone = userPhone.text.toString()
-            if (id.isNotEmpty() && name.isNotEmpty() && phone.isNotEmpty()) {
+            if (id.isNotBlank() && name.isNotBlank() && phone.isNotBlank()) {
                 val user = User(id, name, phone)
                 userDao?.insert(user)
                 userID.text.clear()
