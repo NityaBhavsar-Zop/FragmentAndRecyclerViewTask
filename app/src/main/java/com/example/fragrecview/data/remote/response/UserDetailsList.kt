@@ -1,4 +1,4 @@
-package com.example.fragrecview.repo
+package com.example.fragrecview.data.remote.response
 
 data class UserDetailsList(
     val id: Int,
