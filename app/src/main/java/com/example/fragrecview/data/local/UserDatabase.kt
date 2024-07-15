@@ -1,4 +1,4 @@
-package app
+package com.example.fragrecview.data.local
 
 import android.content.Context
 import androidx.room.Database
