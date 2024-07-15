@@ -17,6 +17,7 @@ import com.example.fragrecview.R
 import com.example.fragrecview.ui.userdetails.adapter.UserAdapter
 import com.example.fragrecview.data.local.User
 import com.example.fragrecview.ui.userdetails.viewmodel.UserDetailsViewModel
+import com.example.fragrecview.ui.userposts.UserPostsFragment
 
 class UserDetailsFragment : Fragment() {
 
@@ -47,6 +48,11 @@ class UserDetailsFragment : Fragment() {
         val addBtn: Button = view.findViewById(R.id.addMoreUsers)
         addBtn.setOnClickListener {
             loadFragment(UserInputFragment())
+        }
+
+        val showPostsButton: Button = view.findViewById(R.id.showPosts)
+        showPostsButton.setOnClickListener {
+            loadFragment(UserPostsFragment())
         }
 
         return view
