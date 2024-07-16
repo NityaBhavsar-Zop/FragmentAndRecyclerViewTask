@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.interceptor)
+    implementation(libs.glide)
 
     val room_version = "2.6.1"
 

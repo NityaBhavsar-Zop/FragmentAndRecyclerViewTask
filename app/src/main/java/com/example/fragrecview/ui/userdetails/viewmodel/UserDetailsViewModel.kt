@@ -1,20 +1,16 @@
 package com.example.fragrecview.ui.userdetails.viewmodel
 
-import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fragrecview.data.local.User
-import com.example.fragrecview.data.local.UserDatabase
+import com.example.fragrecview.data.local.UserDao
 
-class UserDetailsViewModel : ViewModel() {
+class UserDetailsViewModel(private val userDao: UserDao) : ViewModel() {
 
-    fun getUsers(context: Context): LiveData<List<User>> {
-        val database = UserDatabase.getDatabase(context)
-        val userDao = database.userDao()
-        val users = userDao.getAll()
-        val liveData = MutableLiveData<List<User>>()
-        liveData.value = users
-        return liveData
+    fun getUsers(): List<User> {
+        return userDao.getAll()
+    }
+
+    fun deleteUser(userID: String) {
+        userDao.delete(userID)
     }
 }

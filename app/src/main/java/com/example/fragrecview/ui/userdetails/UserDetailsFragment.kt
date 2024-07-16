@@ -9,8 +9,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fragrecview.R
@@ -18,13 +16,14 @@ import com.example.fragrecview.ui.userdetails.adapter.UserAdapter
 import com.example.fragrecview.data.local.User
 import com.example.fragrecview.ui.userdetails.viewmodel.UserDetailsViewModel
 import com.example.fragrecview.ui.userposts.UserPostsFragment
+import com.example.fragrecview.data.local.UserDatabase
 
 class UserDetailsFragment : Fragment() {
 
-    private lateinit var userDetailsViewModel: UserDetailsViewModel
     private lateinit var rvAdapter: UserAdapter
     private lateinit var noUsersTextView: TextView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var userDetailsViewModel: UserDetailsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,15 +34,21 @@ class UserDetailsFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerViewUsers)
         noUsersTextView = view.findViewById(R.id.noUsers)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        rvAdapter = UserAdapter()
+        rvAdapter = UserAdapter { user ->
+            userDetailsViewModel.deleteUser(user.userID)
+            val updatedUsers = userDetailsViewModel.getUsers()
+            rvAdapter.updateData(updatedUsers)
+            updateUI(updatedUsers)
+        }
+
         recyclerView.adapter = rvAdapter
 
-        userDetailsViewModel = ViewModelProvider(this).get(UserDetailsViewModel::class.java)
+        val userDao = UserDatabase.getDatabase(requireContext()).userDao()
+        userDetailsViewModel = UserDetailsViewModel(userDao)
 
-        userDetailsViewModel.getUsers(requireContext()).observe(viewLifecycleOwner, Observer { users:List<User> ->
-            rvAdapter.updateData(users)
-            updateUI(users)
-        })
+        val users = userDetailsViewModel.getUsers()
+        rvAdapter.updateData(users)
+        updateUI(users)
 
         val addBtn: Button = view.findViewById(R.id.addMoreUsers)
         addBtn.setOnClickListener {
