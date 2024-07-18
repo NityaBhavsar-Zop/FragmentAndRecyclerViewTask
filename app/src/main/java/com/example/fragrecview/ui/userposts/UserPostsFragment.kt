@@ -1,7 +1,6 @@
 package com.example.fragrecview.ui.userposts
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fragrecview.R
+import com.example.fragrecview.data.local.userdata.UserDatabase
+import com.example.fragrecview.data.remote.GetRetrofitInstance
+import com.example.fragrecview.data.repository.PostsRepository
 import com.example.fragrecview.ui.userdetails.UserDetailsFragment
 import com.example.fragrecview.ui.userposts.adapter.PostsAdapter
 import com.example.fragrecview.ui.userposts.viewmodel.UserPostsViewModel
+import com.example.fragrecview.ui.userposts.viewmodel.UserPostsViewModelFactory
 
 class UserPostsFragment : Fragment() {
 
-    private lateinit var userPostsViewModel: UserPostsViewModel
-    private lateinit var rvAdapter: PostsAdapter
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var postAdapter: PostsAdapter
+    private lateinit var showPostViewModel : UserPostsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,16 +32,18 @@ class UserPostsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.recyclerViewPosts)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        rvAdapter = PostsAdapter()
-        recyclerView.adapter = rvAdapter
-
-        userPostsViewModel = ViewModelProvider(this)[UserPostsViewModel::class.java]
-
-        userPostsViewModel.getPosts { posts ->
-            Log.d("UserPostsFragment", "Posts received: ${posts.size}")
-            rvAdapter.updateData(posts)
+        showPostViewModel = ViewModelProvider(this@UserPostsFragment, UserPostsViewModelFactory(
+            PostsRepository(GetRetrofitInstance().getRetrofitInstance(), UserDatabase.getDatabase(requireContext()).postsDao())
+        )
+        )[UserPostsViewModel::class.java]
+        val recyclerView : RecyclerView = view.findViewById(R.id.recyclerViewPosts)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        postAdapter = PostsAdapter(requireContext()) { postId ->
+            showPostViewModel.toggleFav(postId)
+        }
+        recyclerView.adapter = postAdapter
+        showPostViewModel.observePost().observe(viewLifecycleOwner) { post ->
+            postAdapter.updateData(post)
         }
 
         val goBackBtn: Button = view.findViewById(R.id.goBackButton)

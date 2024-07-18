@@ -1,33 +1,21 @@
 package com.example.fragrecview.ui.userposts.viewmodel
 
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.fragrecview.data.remote.GetRetrofitInstance
-import com.example.fragrecview.data.remote.response.UserPostsList
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.fragrecview.data.local.userposts.UserPostsList
+import com.example.fragrecview.data.repository.PostsRepository
 
-class UserPostsViewModel : ViewModel() {
-    fun getPosts(callback: (List<UserPostsList>) -> Unit) {
-        val apiService = GetRetrofitInstance().getRetrofitInstance()
-        apiService.getPhotos().enqueue(object : Callback<List<UserPostsList>> {
-            override fun onResponse(
-                call: Call<List<UserPostsList>>,
-                response: Response<List<UserPostsList>>
-            ) {
-                if (response.isSuccessful) {
-                    val posts = response.body() ?: emptyList()
-                    Log.d("UserPostsViewModel", "API Response: ${posts.size} posts")
-                    callback(posts)
-                } else {
-                    Log.e("UserPostsViewModel", "API Error: ${response.code()} - ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<List<UserPostsList>>, t: Throwable) {
-                Log.e("UserPostsViewModel", "API Failure", t)
-            }
-        })
+class UserPostsViewModel(
+    private val postsRepository: PostsRepository
+) : ViewModel() {
+    init {
+        downloadPost()
+    }
+    private fun downloadPost() {
+        postsRepository.fetchPosts()
+    }
+    fun observePost(): LiveData<List<UserPostsList>> = postsRepository.observePosts()
+    fun toggleFav(postId: Int) {
+        postsRepository.toggleFav(postId)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.fragrecview.data.local
+package com.example.fragrecview.data.local.userdata
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
