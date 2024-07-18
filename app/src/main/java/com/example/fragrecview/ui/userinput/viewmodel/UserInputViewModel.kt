@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.fragrecview.MainActivity
 import com.example.fragrecview.R
-import com.example.fragrecview.data.local.User
-import com.example.fragrecview.data.local.UserDao
-import com.example.fragrecview.data.local.UserDatabase
+import com.example.fragrecview.data.local.userdata.User
+import com.example.fragrecview.data.local.userdata.UserDao
+import com.example.fragrecview.data.local.userdata.UserDatabase
 
 class UserInputViewModel : ViewModel() {
     private var database: UserDatabase? = null
