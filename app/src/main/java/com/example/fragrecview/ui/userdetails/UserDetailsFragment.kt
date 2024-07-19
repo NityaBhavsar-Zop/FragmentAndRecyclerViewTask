@@ -50,7 +50,6 @@ class UserDetailsFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = rvAdapter
         }
-
         noUsersTextView = view.findViewById(R.id.noUsers)
 
         val users = userDetailsViewModel.getUsers()
