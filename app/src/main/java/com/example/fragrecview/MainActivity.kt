@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         makeApiCall()
     }
 
-    private fun loadFragment(fragment: Fragment) {
+     fun loadFragment(fragment: Fragment) {
         val fm = supportFragmentManager
         val ft = fm.beginTransaction()
         ft.replace(R.id.fragment_container, fragment)
