@@ -42,13 +42,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3de54a5c-4521-4a9b-b7e4-551122f0db7c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/data/remote/response/UserDetailsList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/data/remote/response/UserDetailsList.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/data/remote/response/UserPostsList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/data/remote/response/UserPostsList.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/ui/userdetails/UserDetailsFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/ui/userdetails/UserDetailsFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/ui/userinput/UserInputFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/ui/userinput/UserInputFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/ui/userposts/UserPostsFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/ui/userposts/UserPostsFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/ui/userdetails/viewmodel/UserDetailsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/fragrecview/ui/userdetails/viewmodel/UserDetailsViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
