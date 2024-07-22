@@ -14,9 +14,11 @@ class UserPostsViewModel @Inject constructor(
     init {
         downloadPost()
     }
+
     private fun downloadPost() {
         postsRepository.fetchPosts()
     }
+
     fun observePost(): LiveData<List<UserPostsList>> = postsRepository.observePosts()
     fun toggleFav(postId: Int) {
         postsRepository.toggleFav(postId)

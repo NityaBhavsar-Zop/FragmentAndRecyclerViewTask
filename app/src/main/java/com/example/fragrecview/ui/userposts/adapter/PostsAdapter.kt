@@ -41,7 +41,12 @@ class PostsAdapter(
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.setData(posts[position])
-        holder.heartButton.setImageDrawable(ContextCompat.getDrawable(context, if(posts[position].isLiked) R.drawable.ic_heart_red else  R.drawable.ic_heart ))
+        holder.heartButton.setImageDrawable(
+            ContextCompat.getDrawable(
+                context,
+                if (posts[position].isLiked) R.drawable.ic_heart_red else R.drawable.ic_heart
+            )
+        )
         holder.heartButton.setOnClickListener {
             onFavClick(posts[position].id)
         }

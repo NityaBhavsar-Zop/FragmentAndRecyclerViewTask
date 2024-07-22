@@ -17,7 +17,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    @Inject lateinit var apiService: ApiService
+    @Inject
+    lateinit var apiService: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,11 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     val result: List<UserDetailsList>? = response.body()
-                    Toast.makeText(this@MainActivity, "${result?.getOrNull(1)?.name}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@MainActivity,
+                        "${result?.getOrNull(1)?.name}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
 

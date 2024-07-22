@@ -33,7 +33,11 @@ class UserInputViewModel @Inject constructor(
 
             Toast.makeText(view.context, "User Added Successfully", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(view.context, "User was not added, enter all user details", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                view.context,
+                "User was not added, enter all user details",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
