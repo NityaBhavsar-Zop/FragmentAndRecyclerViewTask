@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fragrecview.R
 import com.example.fragrecview.ui.userdetails.adapter.UserAdapter
 import com.example.fragrecview.data.local.userdata.User
+import com.example.fragrecview.ui.MainActivity
 import com.example.fragrecview.ui.userdetails.viewmodel.UserDetailsViewModel
 import com.example.fragrecview.ui.userposts.UserPostsFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,10 +23,19 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class UserDetailsFragment : Fragment() {
 
-    private lateinit var rvAdapter: UserAdapter
     private lateinit var noUsersTextView: TextView
     private lateinit var recyclerView: RecyclerView
     private val userDetailsViewModel: UserDetailsViewModel by viewModels()
+
+    private val rvAdapter: UserAdapter by lazy {
+        UserAdapter { user ->
+            userDetailsViewModel.deleteUser(user.userID)
+            val updatedUsers = userDetailsViewModel.getUsers()
+            rvAdapter.updateData(updatedUsers)
+            updateUI(updatedUsers)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,13 +45,6 @@ class UserDetailsFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerViewUsers)
         noUsersTextView = view.findViewById(R.id.noUsers)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        rvAdapter = UserAdapter { user ->
-            userDetailsViewModel.deleteUser(user.userID)
-            val updatedUsers = userDetailsViewModel.getUsers()
-            rvAdapter.updateData(updatedUsers)
-            updateUI(updatedUsers)
-        }
-
         recyclerView.adapter = rvAdapter
 
         val users = userDetailsViewModel.getUsers()
@@ -50,12 +53,22 @@ class UserDetailsFragment : Fragment() {
 
         val addBtn: Button = view.findViewById(R.id.addMoreUsers)
         addBtn.setOnClickListener {
-            loadFragment(UserInputFragment())
+            val userInputFragment = UserInputFragment()
+            activity?.let { mainActivity ->
+                if (mainActivity is MainActivity) {
+                    mainActivity.loadFragment(userInputFragment)
+                }
+            }
         }
 
         val showPostsButton: Button = view.findViewById(R.id.showPosts)
         showPostsButton.setOnClickListener {
-            loadFragment(UserPostsFragment())
+            val userPostsFragment = UserPostsFragment()
+            activity?.let { mainActivity ->
+                if (mainActivity is MainActivity) {
+                    mainActivity.loadFragment(userPostsFragment)
+                }
+            }
         }
 
         return view
@@ -64,13 +77,5 @@ class UserDetailsFragment : Fragment() {
     private fun updateUI(users: List<User>) {
         noUsersTextView.isVisible = users.isEmpty()
         recyclerView.isVisible = users.isNotEmpty()
-    }
-
-    private fun loadFragment(fragment: Fragment) {
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container, fragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
     }
 }
