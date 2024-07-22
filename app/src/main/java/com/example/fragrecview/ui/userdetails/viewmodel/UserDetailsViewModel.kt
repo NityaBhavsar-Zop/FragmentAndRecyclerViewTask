@@ -3,14 +3,19 @@ package com.example.fragrecview.ui.userdetails.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.fragrecview.data.local.userdata.User
 import com.example.fragrecview.data.local.userdata.UserDao
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class UserDetailsViewModel(private val userDao: UserDao) : ViewModel() {
+@HiltViewModel
+class UserDetailsViewModel @Inject constructor(
+    private val providesUserDao: UserDao
+) : ViewModel() {
 
     fun getUsers(): List<User> {
-        return userDao.getAll()
+        return providesUserDao.getAll()
     }
 
     fun deleteUser(userID: String) {
-        userDao.delete(userID)
+        providesUserDao.delete(userID)
     }
 }

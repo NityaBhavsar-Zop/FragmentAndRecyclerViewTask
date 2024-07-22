@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fragrecview.R
@@ -16,15 +17,15 @@ import com.example.fragrecview.ui.userdetails.adapter.UserAdapter
 import com.example.fragrecview.data.local.userdata.User
 import com.example.fragrecview.ui.userdetails.viewmodel.UserDetailsViewModel
 import com.example.fragrecview.ui.userposts.UserPostsFragment
-import com.example.fragrecview.data.local.userdata.UserDatabase
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserDetailsFragment : Fragment() {
 
     private lateinit var rvAdapter: UserAdapter
     private lateinit var noUsersTextView: TextView
     private lateinit var recyclerView: RecyclerView
-    private lateinit var userDetailsViewModel: UserDetailsViewModel
-
+    private val userDetailsViewModel: UserDetailsViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,9 +43,6 @@ class UserDetailsFragment : Fragment() {
         }
 
         recyclerView.adapter = rvAdapter
-
-        val userDao = UserDatabase.getDatabase(requireContext()).userDao()
-        userDetailsViewModel = UserDetailsViewModel(userDao)
 
         val users = userDetailsViewModel.getUsers()
         rvAdapter.updateData(users)

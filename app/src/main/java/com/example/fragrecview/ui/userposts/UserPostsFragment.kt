@@ -6,22 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fragrecview.R
-import com.example.fragrecview.data.local.userdata.UserDatabase
-import com.example.fragrecview.data.remote.GetRetrofitInstance
-import com.example.fragrecview.data.repository.PostsRepository
 import com.example.fragrecview.ui.userdetails.UserDetailsFragment
 import com.example.fragrecview.ui.userposts.adapter.PostsAdapter
 import com.example.fragrecview.ui.userposts.viewmodel.UserPostsViewModel
-import com.example.fragrecview.ui.userposts.viewmodel.UserPostsViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserPostsFragment : Fragment() {
 
     private lateinit var postAdapter: PostsAdapter
-    private lateinit var showPostViewModel : UserPostsViewModel
+    private val showPostViewModel: UserPostsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +30,7 @@ class UserPostsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showPostViewModel = ViewModelProvider(this@UserPostsFragment, UserPostsViewModelFactory(
-            PostsRepository(GetRetrofitInstance().getRetrofitInstance(), UserDatabase.getDatabase(requireContext()).postsDao())
-        )
-        )[UserPostsViewModel::class.java]
+
         val recyclerView : RecyclerView = view.findViewById(R.id.recyclerViewPosts)
         recyclerView.layoutManager = LinearLayoutManager(context)
         postAdapter = PostsAdapter(requireContext()) { postId ->

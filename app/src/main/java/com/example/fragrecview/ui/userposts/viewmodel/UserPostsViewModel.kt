@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.fragrecview.data.local.userposts.UserPostsList
 import com.example.fragrecview.data.repository.PostsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class UserPostsViewModel(
+@HiltViewModel
+class UserPostsViewModel @Inject constructor(
     private val postsRepository: PostsRepository
 ) : ViewModel() {
     init {

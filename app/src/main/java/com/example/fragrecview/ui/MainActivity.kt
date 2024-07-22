@@ -1,17 +1,23 @@
-package com.example.fragrecview
+package com.example.fragrecview.ui
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.fragrecview.data.remote.GetRetrofitInstance
+import com.example.fragrecview.R
+import com.example.fragrecview.data.remote.ApiService
 import com.example.fragrecview.data.remote.response.UserDetailsList
 import com.example.fragrecview.ui.userdetails.UserDetailsFragment
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject lateinit var apiService: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +35,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun makeApiCall() {
-        val apiService = GetRetrofitInstance().getRetrofitInstance()
         apiService.getUsers().enqueue(object : Callback<List<UserDetailsList>> {
             override fun onResponse(
                 call: Call<List<UserDetailsList>>,
