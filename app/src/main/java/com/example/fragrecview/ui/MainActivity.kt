@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.fragrecview.R
 import com.example.fragrecview.data.remote.ApiService
 import com.example.fragrecview.data.remote.response.UserDetailsList
 import com.example.fragrecview.ui.userdetails.UserDetailsFragment
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,7 +25,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         loadFragment(UserDetailsFragment())
-        makeApiCall()
+        lifecycleScope.launch {
+            makeApiCall()
+        }
     }
 
     fun loadFragment(fragment: Fragment) {
@@ -35,14 +38,12 @@ class MainActivity : AppCompatActivity() {
         ft.commit()
     }
 
-    private fun makeApiCall() {
-        apiService.getUsers().enqueue(object : Callback<List<UserDetailsList>> {
-            override fun onResponse(
-                call: Call<List<UserDetailsList>>,
-                response: Response<List<UserDetailsList>>
-            ) {
-                if (response.isSuccessful) {
-                    val result: List<UserDetailsList>? = response.body()
+    private suspend fun makeApiCall() {
+        withContext(Dispatchers.IO) {
+            val response = apiService.getUsers()
+            if (response.isSuccessful) {
+                val result: List<UserDetailsList>? = response.body()
+                withContext(Dispatchers.Main) {
                     Toast.makeText(
                         this@MainActivity,
                         "${result?.getOrNull(1)?.name}",
@@ -50,10 +51,15 @@ class MainActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-
-            override fun onFailure(call: Call<List<UserDetailsList>>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Failure: ${t.message}", Toast.LENGTH_LONG).show()
+            else {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Failure: Failed to fetch data",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
-        })
+        }
     }
 }
