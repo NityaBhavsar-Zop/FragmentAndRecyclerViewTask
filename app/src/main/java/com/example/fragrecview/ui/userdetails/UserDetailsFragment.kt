@@ -42,13 +42,7 @@ class UserDetailsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_user_details, container, false)
 
-        recyclerView = view.findViewById(R.id.recyclerViewUsers)
-        noUsersTextView = view.findViewById(R.id.noUsers)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = rvAdapter
-
-        val users = userDetailsViewModel.getUsers()
-        rvAdapter.updateData(users)
+        val users = users(view)
         updateUI(users)
 
         val addBtn: Button = view.findViewById(R.id.addMoreUsers)
@@ -72,6 +66,17 @@ class UserDetailsFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun users(view: View): List<User> {
+        recyclerView = view.findViewById(R.id.recyclerViewUsers)
+        noUsersTextView = view.findViewById(R.id.noUsers)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = rvAdapter
+
+        val users = userDetailsViewModel.getUsers()
+        rvAdapter.updateData(users)
+        return users
     }
 
     private fun updateUI(users: List<User>) {
