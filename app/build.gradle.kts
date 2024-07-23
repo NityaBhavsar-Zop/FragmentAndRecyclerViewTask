@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("kapt")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -50,6 +52,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.interceptor)
+    implementation(libs.glide)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
     val room_version = "2.6.1"
 
@@ -58,5 +63,7 @@ dependencies {
 
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
-
+}
+kapt {
+    correctErrorTypes = true
 }

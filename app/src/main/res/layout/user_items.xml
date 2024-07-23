@@ -76,6 +76,13 @@
                 android:text=""
                 android:textSize="16sp"/>
         </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:text="Delete"
+            android:textSize="18sp"
+            android:id="@+id/deleteUser" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

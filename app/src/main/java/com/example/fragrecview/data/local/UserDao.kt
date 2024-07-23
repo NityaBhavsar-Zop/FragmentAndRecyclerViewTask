@@ -12,4 +12,7 @@ interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: User)
+
+    @Query("DELETE FROM user WHERE userID = :userID")
+    fun delete(userID: String)
 }
