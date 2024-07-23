@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fragrecview.R
 import com.example.fragrecview.data.local.userdata.User
 
-class UserAdapter(private val onDeleteClickListener: (User) -> Unit) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter(private val onDeleteClickListener: (User) -> Unit) :
+    RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     private var users = listOf<User>()
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

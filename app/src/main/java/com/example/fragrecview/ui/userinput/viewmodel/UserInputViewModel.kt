@@ -1,44 +1,27 @@
 package com.example.fragrecview.ui.userinput.viewmodel
 
-import android.content.Context
-import android.widget.EditText
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import com.example.fragrecview.MainActivity
-import com.example.fragrecview.R
+import androidx.lifecycle.viewModelScope
 import com.example.fragrecview.data.local.userdata.User
 import com.example.fragrecview.data.local.userdata.UserDao
-import com.example.fragrecview.data.local.userdata.UserDatabase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserInputViewModel : ViewModel() {
-    private var database: UserDatabase? = null
-    private var userDao: UserDao? = null
+@HiltViewModel
+class UserInputViewModel @Inject constructor(
+    private val userDao: UserDao
+) : ViewModel() {
 
-    fun getInput(context: Context) {
-        database = UserDatabase.getDatabase(context.applicationContext)
-        userDao = database?.userDao()
+    fun isValidInput(userId: String, userName: String, userPhone: String): Boolean {
+        return userId.isNotBlank() && userName.isNotBlank() && userPhone.isNotBlank()
+    }
 
-        val userID: EditText = (context as MainActivity).findViewById(R.id.userId)
-        val userName: EditText = context.findViewById(R.id.userName)
-        val userPhone: EditText = context.findViewById(R.id.userPhone)
-
-        val id = userID.text.toString()
-        val name = userName.text.toString()
-        val phone = userPhone.text.toString()
-        if (id.isNotBlank() && name.isNotBlank() && phone.isNotBlank()) {
-            val user = User(id, name, phone)
-            userDao?.insert(user)
-            userID.text.clear()
-            userName.text.clear()
-            userPhone.text.clear()
-
-            val message = "User Added Successfully"
-            val toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
-            toast.show()
-        } else {
-            val message = "User was not added, enter all user details"
-            val toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
-            toast.show()
+    fun addUser(userId: String, userName: String, userPhone: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val user = User(userId, userName, userPhone)
+            userDao.insert(user)
         }
     }
 }
