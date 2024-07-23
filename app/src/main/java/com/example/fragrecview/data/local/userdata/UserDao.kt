@@ -1,4 +1,4 @@
-package com.example.fragrecview.data.local
+package com.example.fragrecview.data.local.userdata
 
 import androidx.room.Dao
 import androidx.room.Insert

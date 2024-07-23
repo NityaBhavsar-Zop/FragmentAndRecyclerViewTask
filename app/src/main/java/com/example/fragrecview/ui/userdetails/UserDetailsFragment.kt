@@ -15,11 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fragrecview.MainActivity
 import com.example.fragrecview.R
 import com.example.fragrecview.ui.userdetails.adapter.UserAdapter
-import com.example.fragrecview.data.local.User
-import com.example.fragrecview.data.local.UserDatabase
+import com.example.fragrecview.data.local.userdata.User
+import com.example.fragrecview.data.local.userdata.UserDatabase
 import com.example.fragrecview.ui.userdetails.viewmodel.UserDetailsViewModel
 import com.example.fragrecview.ui.userdetails.viewmodel.UserDetailsViewModelFactory
 import com.example.fragrecview.ui.userposts.UserPostsFragment
+
 
 class UserDetailsFragment : Fragment() {
 
