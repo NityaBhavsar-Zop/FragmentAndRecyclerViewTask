@@ -39,7 +39,6 @@ class UserPostsFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewPosts)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = postAdapter
-
         showPostViewModel.observePost().observe(viewLifecycleOwner) { post ->
             postAdapter.updateData(post)
         }
