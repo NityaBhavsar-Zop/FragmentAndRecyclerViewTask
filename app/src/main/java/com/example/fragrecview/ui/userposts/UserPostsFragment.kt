@@ -46,11 +46,8 @@ class UserPostsFragment : Fragment() {
         val goBackBtn: Button = view.findViewById(R.id.goBackButton)
         goBackBtn.setOnClickListener {
             val userDetailsFragment = UserDetailsFragment()
-            activity?.let { mainActivity ->
-                if (mainActivity is MainActivity) {
-                    mainActivity.loadFragment(userDetailsFragment)
-                }
-            }
+            val mainActivity = activity as? MainActivity
+            mainActivity?.loadFragment(userDetailsFragment)
         }
     }
 }
