@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,12 +27,7 @@ class UserDetailsFragment : Fragment() {
     private lateinit var noUsersTextView: TextView
     private lateinit var recyclerView: RecyclerView
     private val userDetailsViewModel: UserDetailsViewModel by viewModels()
-
-    private val rvAdapter: UserAdapter by lazy {
-        UserAdapter { user ->
-            userDetailsViewModel.deleteUser(user.userID)
-        }
-    }
+    private lateinit var rvAdapter: UserAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -41,36 +37,32 @@ class UserDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        rvAdapter = UserAdapter { userID ->
+            userDetailsViewModel.deleteUser(userID)
+            Toast.makeText(activity, "User Deleted", Toast.LENGTH_LONG).show()
+        }
         recyclerView = view.findViewById(R.id.recyclerViewUsers)
         noUsersTextView = view.findViewById(R.id.noUsers)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = rvAdapter
 
-        userDetailsViewModel.users.observe(viewLifecycleOwner) { users ->
+        userDetailsViewModel.fetchUsers().observe(viewLifecycleOwner) { users ->
             rvAdapter.updateData(users)
             updateUI(users)
         }
 
-        userDetailsViewModel.fetchUsers()
-
         val addBtn: Button = view.findViewById(R.id.addMoreUsers)
         addBtn.setOnClickListener {
             val userInputFragment = UserInputFragment()
-            activity?.let { mainActivity ->
-                if (mainActivity is MainActivity) {
-                    mainActivity.loadFragment(userInputFragment)
-                }
-            }
+            val mainActivity = activity as? MainActivity
+            mainActivity?.loadFragment(userInputFragment)
         }
 
         val showPostsButton: Button = view.findViewById(R.id.showPosts)
         showPostsButton.setOnClickListener {
             val userPostsFragment = UserPostsFragment()
-            activity?.let { mainActivity ->
-                if (mainActivity is MainActivity) {
-                    mainActivity.loadFragment(userPostsFragment)
-                }
-            }
+            val mainActivity = activity as? MainActivity
+            mainActivity?.loadFragment(userPostsFragment)
         }
     }
 

@@ -45,12 +45,9 @@ class UserInputFragment : Fragment() {
                 userName.text.clear()
                 userPhone.text.clear()
                 Toast.makeText(requireContext(), "User added successfully", Toast.LENGTH_LONG).show()
-                activity?.let { mainActivity ->
-                    val userDetailsFragment = UserDetailsFragment()
-                    if (mainActivity is MainActivity) {
-                        mainActivity.loadFragment(userDetailsFragment)
-                    }
-                }
+                val userDetailsFragment = UserDetailsFragment()
+                val mainActivity = activity as? MainActivity
+                mainActivity?.loadFragment(userDetailsFragment)
             } else {
                 Toast.makeText(requireContext(), "Invalid input", Toast.LENGTH_LONG).show()
             }

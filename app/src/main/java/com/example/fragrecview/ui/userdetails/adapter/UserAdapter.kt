@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fragrecview.R
 import com.example.fragrecview.data.local.userdata.User
 
-class UserAdapter(private val onDeleteClickListener: (User) -> Unit) :
+class UserAdapter(private val onDeleteClickListener: (String) -> Unit) :
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
-    private var users = listOf<User>()
+    private var users = mutableListOf<User>()
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val userIDTextView: TextView = itemView.findViewById(R.id.userIdTextView)
@@ -20,13 +21,13 @@ class UserAdapter(private val onDeleteClickListener: (User) -> Unit) :
         private val userPhoneTextView: TextView = itemView.findViewById(R.id.userPhoneTextView)
         private val deleteButton: Button = itemView.findViewById(R.id.deleteUser)
 
-        fun bind(user: User, onDeleteClickListener: (User) -> Unit) {
+        fun bind(user: User, onDeleteClickListener: (String) -> Unit) {
             with(user) {
                 userIDTextView.text = userID
                 userNameTextView.text = userName
                 userPhoneTextView.text = userPhone
                 deleteButton.setOnClickListener {
-                    onDeleteClickListener.invoke(user)
+                    onDeleteClickListener(userID)
                 }
             }
         }
@@ -44,7 +45,7 @@ class UserAdapter(private val onDeleteClickListener: (User) -> Unit) :
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(data: List<User>) {
-        users = data
+        users = data.toMutableList()
         notifyDataSetChanged()
     }
 
